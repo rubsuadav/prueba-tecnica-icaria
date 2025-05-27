@@ -1,0 +1,50 @@
+<div class="container">
+  <!-- Searching -->
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchItem"
+      (input)="loadPage(0)"
+      placeholder="Buscar..."
+    />
+  </div>
+
+  <!-- Movies List -->
+  @if(movies.length === 0) {
+  <div class="without-results">
+    <p>No se encontraron resultados de la búsqueda.</p>
+  </div>
+  } @else {
+  <div class="movies-list">
+    @for (movie of movies; track $index) {
+    <div class="movie-card">
+      <img
+        [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+        alt="{{ movie.title }}"
+      />
+      <h3>{{ movie.title }}</h3>
+      <p style="text-align: justify">{{ movie.overview }}</p>
+      <p>
+        Fecha de lanzamiento: {{ movie.release_date | date : "dd/MM/yyyy" }}
+      </p>
+      <p>Votos: {{ movie.vote_count }} ({{ movie.vote_average }})</p>
+      <p>Popularidad: {{ movie.popularity }}</p>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button (click)="loadPage(actualPage - 1)" [disabled]="actualPage === 0">
+      Anterior
+    </button>
+    <span>Página {{ actualPage + 1 }} de {{ totalPages }}</span>
+    <button
+      (click)="loadPage(actualPage + 1)"
+      [disabled]="actualPage + 1 >= totalPages"
+    >
+      Siguiente
+    </button>
+  </div>
+</div>
